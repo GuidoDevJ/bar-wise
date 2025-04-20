@@ -1,10 +1,35 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
+/* Define aquí tus variables de tema para colores */
+@theme {
+  /* ——— Primary ——— */
+  --color-primary-50: #fef4e9;
+  --color-primary-100: #fcdebb;
+  --color-primary-200: #fbce9a;
+  --color-primary-300: #f9b86c;
+  --color-primary-400: #f8aa50;
+  --color-primary-500: #f69524;
+  --color-primary-600: #e08821;
+  --color-primary-700: #af6a1a;
+  --color-primary-800: #875214;
+  --color-primary-900: #673f0f;
 
+  /* ——— Secondary ——— */
+  --color-secondary-50: #efeaf3;
+  --color-secondary-100: #cdbcd9;
+  --color-secondary-200: #b49cc7;
+  --color-secondary-300: #926fae;
+  --color-secondary-400: #7d539e;
+  --color-secondary-500: #5d2886;
+  --color-secondary-600: #55247a;
+  --color-secondary-700: #421c5f;
+  --color-secondary-800: #33164a;
+  --color-secondary-900: #271138;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
