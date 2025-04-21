@@ -20,8 +20,6 @@ const Header = () => {
 
   return (
     <header className="w-full h-[10vh] flex justify-between bg-secondary-500 text-white p-4 items-center relative">
-      
-
       <div className="flex items-center">
         <Image
           src={HamburgerSVG}
@@ -32,14 +30,16 @@ const Header = () => {
           onClick={() => setShowMenu((prev) => !prev)}
         />
       </div>
-      <h1 className='text-center text-[32px] font-bold z-0'>Bar Wise</h1>
+      <h1 className="text-center text-[32px] font-bold z-0">Bar Wise</h1>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 relative">
         <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: showSearch ? 1 : 0, x: showSearch ? 0 : 50 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: showSearch ? 1 : 0, y: showSearch ? 0 : 20 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className={`relative ${showSearch ? 'block' : 'hidden'}`}
+          className={`absolute top-[-8] right-20 ${
+            showSearch ? 'block' : 'hidden'
+          } z-50`}
         >
           <SearchBar posts={posts} />
         </motion.div>
@@ -57,7 +57,7 @@ const Header = () => {
         initial={{ x: '-100%' }}
         animate={{ x: showMenu ? 0 : '-100%' }}
         transition={{ duration: 0.4, ease: 'easeInOut' }}
-        className="fixed top-0 left-0 h-auto w-auto shadow-lg z-501"
+        className="fixed top-17 left-0 h-auto w-auto shadow-lg z-501"
       >
         <ToggleBarMenu />
       </motion.div>
