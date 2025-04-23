@@ -20,7 +20,7 @@ const optionsFooter = [
 
 const MainFooter = () => {
   return (
-    <footer className="bg-secondary-500 flex justify-center">
+    <footer className="h-[10vh] bg-secondary-500 flex justify-center">
       <div className="w-[300px] md:w-[450px] flex justify-between items-center text-[#fff]">
         {optionsFooter.map((opt, index) => {
           return (

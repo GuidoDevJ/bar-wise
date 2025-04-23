@@ -10,7 +10,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <>
       <Header />
-      <main className="flex flex-col items-center justify-center min-h-[80vh] px-4">
+      <main className="flex flex-col items-center min-h-[80vh] px-4">
         {children}
       </main>
       <MainFooter />
