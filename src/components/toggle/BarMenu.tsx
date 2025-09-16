@@ -31,13 +31,13 @@ const ToggleBarMenu = () => {
         <Link
           key={index}
           href={`/${option.title.toLowerCase()}`}
-          className="flex items-center gap-2 hover:bg-secondary-100 p-2 transition"
+          className="flex items-center gap-2 text-[#000] hover:bg-secondary-100 p-2 transition"
         >
           <Image src={option.imgSrc} alt={option.title} width={24} height={24} />
           <span className="text-sm font-medium">{option.title}</span>
         </Link>
       ))}
-      <div className="w-full h-[1px] bg-secondary-200"></div>
+      {/* <div className="w-full h-[1px] bg-secondary-200"></div>
       <Link 
         href={"/reseñas"}
         className="flex items-center gap-2 hover:bg-secondary-100 p-2 transition"
@@ -53,7 +53,7 @@ const ToggleBarMenu = () => {
       >
       <span className="text-sm font-medium">Reseñas</span>
 
-      </Link>
+      </Link> */}
     </div>
   )
 }

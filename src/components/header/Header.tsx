@@ -24,13 +24,13 @@ const Header = () => {
         <Image
           src={HamburgerSVG}
           alt="Menu icon"
-          width={24}
-          height={24}
+          width={28}
+          height={28}
           className="cursor-pointer"
           onClick={() => setShowMenu((prev) => !prev)}
         />
       </div>
-      <h1 className="text-center text-[32px] font-bold z-0">Bar Wise</h1>
+      <h1 className="text-center text-[24px] font-medium z-0">Bar Wise</h1>
 
       <div className="flex items-center gap-4 relative">
         <motion.div

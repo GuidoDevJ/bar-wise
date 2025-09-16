@@ -1,21 +1,23 @@
-import { ReactNode } from 'react'
-import MainFooter from '../footer/MainFooter'
-import Header from '../header/Header'
+import MainFooter from "../footer/MainFooter";
+import Header from "../header/Header";
 
 interface MainLayoutProps {
-  children: ReactNode
+  children: React.ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex flex-col items-center min-h-[80vh] px-4">
+
+      {/* Main adaptativo */}
+      <main className="flex-1 flex flex-col w-full px-4 py-8">
         {children}
       </main>
-      <MainFooter />
-    </>
-  )
-}
 
-export default MainLayout
+      <MainFooter />
+    </div>
+  );
+};
+
+export default MainLayout;

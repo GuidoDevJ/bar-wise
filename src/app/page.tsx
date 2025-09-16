@@ -1,4 +1,4 @@
-import SuggestContainer from '@/components/container/SuggetsContainer/SuggestContainer';
+import MainContainerCategory from '@/components/container/MainContainerCategory/MainContainerCategory';
 import MainLayout from '@/components/layout/MainLayout';
 
 const mainContainers = [
@@ -34,7 +34,7 @@ export default function Home() {
       <div className="m-4 w-[80vw] grid grid-cols-1 md:grid-cols-3 gap-4">
         {mainContainers.map((container, index) => (
           <div key={index} className="w-full h-full">
-            <SuggestContainer />
+            <MainContainerCategory goTo={ container.goTo} imgSrc={container.imgSrc} title={container.title} />
           </div>
         ))}
       </div>
