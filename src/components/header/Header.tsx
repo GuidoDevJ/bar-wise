@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { motion } from 'framer-motion';
@@ -8,15 +7,12 @@ import HamburgerSVG from '../../../public/hamburger.svg';
 import Search from '../../../public/search.svg';
 import SearchBar from '../input/SearchMenus';
 import ToggleBarMenu from '../toggle/BarMenu';
+import { useSearchMenu } from '@/hooks/useSearchMenu';
 
 const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-
-  //   const navigate = useRouter();
-  //   const navigateToPost = () => navigate.push(`/`);
-
-  const posts: any = [];
+  const { items } = useSearchMenu();
 
   return (
     <header className="w-full h-[10vh] flex justify-between bg-secondary-500 text-white p-4 items-center relative">
@@ -37,11 +33,11 @@ const Header = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: showSearch ? 1 : 0, y: showSearch ? 0 : 20 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className={`absolute top-[-8] right-20 ${
+          className={`absolute top-8 right-0 ${
             showSearch ? 'block' : 'hidden'
           } z-50`}
         >
-          <SearchBar posts={posts} />
+          <SearchBar items={items} />
         </motion.div>
         <Image
           src={Search}

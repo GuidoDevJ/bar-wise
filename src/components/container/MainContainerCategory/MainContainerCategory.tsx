@@ -18,8 +18,8 @@ const MainContainerCategory = ({ goTo, imgSrc, title }: Props) => {
             className="object-cover"
           />
   
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+          {/* Overlay - visible en mobile, hover en desktop */}
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
             <h2 className="text-white text-xl font-semibold text-center">
               {title}
             </h2>

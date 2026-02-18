@@ -1,24 +1,26 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
+import { SearchableItem } from '@/hooks/useSearchMenu';
 
+interface SearchBarProps {
+  items: SearchableItem[];
+}
 
-
-const SearchBar = ({ posts }: any) => {
+const SearchBar = ({ items }: SearchBarProps) => {
   const navigate = useRouter();
 
   const [query, setQuery] = useState<string>('');
-  const [filteredSuggestions, setFilteredSuggestions] = useState<any[]>(
-    []
-  );
+  const [filteredSuggestions, setFilteredSuggestions] = useState<SearchableItem[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const userInput = e.target.value;
     setQuery(userInput);
 
     if (userInput) {
-      const filtered = posts.filter((post: any) =>
-        post.title.toLowerCase().includes(userInput.toLowerCase())
+      const filtered = items.filter((item) =>
+        item.title.toLowerCase().includes(userInput.toLowerCase())
       );
       setFilteredSuggestions(filtered);
     } else {
@@ -26,10 +28,10 @@ const SearchBar = ({ posts }: any) => {
     }
   };
 
-  const handleSuggestionClick = (suggestion: string, post: any) => {
-    setQuery(suggestion);
+  const handleSuggestionClick = (item: SearchableItem) => {
+    setQuery(item.title);
     setFilteredSuggestions([]);
-    navigate.push(`/post/${post.postId}*${post.id}`);
+    navigate.push(item.href);
   };
 
   return (
@@ -38,23 +40,23 @@ const SearchBar = ({ posts }: any) => {
         type="text"
         value={query}
         onChange={handleChange}
-        className="w-full p-2 bg-[#EFEAF3] border rounded-md text-[#1B1A1A] focus:outline-none focus:ring-2 focus:ring-blue-400 dark:text-white dark:border-none"
-        placeholder="¿Que deseas buscar?"
+        className="w-full p-2 bg-[#EFEAF3] border rounded-md text-[#1B1A1A] focus:outline-none focus:ring-2 focus:ring-blue-400"
+        placeholder="Que deseas buscar?"
       />
       {query && filteredSuggestions.length === 0 ? (
-        <ul className="absolute w-full bg-[#EFEAF3] border border-t-0 rounded-b-md shadow-lg dark:bg-[#121212] dark:text-white dark:border-none z-10">
+        <ul className="absolute w-[250px] bg-[#EFEAF3] border border-t-0 rounded-b-md shadow-lg z-10">
           <li className="p-2 text-gray-500">No hay resultados</li>
         </ul>
       ) : (
         filteredSuggestions.length > 0 && (
-          <ul className="absolute w-full bg-[#EFEAF3] border border-t-0 rounded-b-md shadow-lg dark:bg-[#121212] dark:text-white dark:border-none z-10">
-            {filteredSuggestions.map((post, index) => (
+          <ul className="absolute w-[250px] bg-[#EFEAF3] border border-t-0 rounded-b-md shadow-lg z-10 max-h-60 overflow-y-auto">
+            {filteredSuggestions.map((item) => (
               <li
-                key={index}
-                onClick={() => handleSuggestionClick(post.title, post)}
-                className="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-inherit"
+                key={`${item.type}-${item.id}`}
+                onClick={() => handleSuggestionClick(item)}
+                className="p-2 cursor-pointer hover:bg-gray-200 text-[#1B1A1A]"
               >
-                {post.title}
+                {item.title}
               </li>
             ))}
           </ul>

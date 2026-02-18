@@ -1,9 +1,17 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
-    domains: ['tiendaabrasadorencasa.com', 'cdn7.kiwilimon.com'],
+    remotePatterns: [
+      { hostname: 'tiendaabrasadorencasa.com' },
+      { hostname: 'cdn7.kiwilimon.com' },
+      { hostname: 'aiejxpvrpgiclnjhhcot.supabase.co' },
+      { hostname: 'airescriollos.com.ar' },
+      { hostname: 'www.infobae.com' },
+      { hostname: 'cookpad.com' },
+      { hostname: 'a-manger.com' },
+      { hostname: 'res.cloudinary.com' },
+    ],
   },
 };
 

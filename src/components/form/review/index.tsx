@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import SupabaseService from '@/lib/supabase/service';
 import StartSimple from '../../../../public/start_complete.svg';
 import StartComplete from '../../../../public/start_simple.svg';
 
@@ -14,7 +15,11 @@ interface IReview {
   email: string;
 }
 
-const FormReview = () => {
+interface FormReviewProps {
+  onReviewSubmitted?: () => void;
+}
+
+const FormReview = ({ onReviewSubmitted }: FormReviewProps) => {
   const {
     register,
     handleSubmit,
@@ -44,11 +49,30 @@ const FormReview = () => {
     setCanSubmit(allFilled);
   }, [watchFields]);
 
-  const onSubmit: SubmitHandler<IReview> = (data) => {
-    console.log(data);
-    alert(JSON.stringify(data));
-    reset();
-    setRating(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const onSubmit: SubmitHandler<IReview> = async (data) => {
+    setSubmitting(true);
+    setSubmitMessage(null);
+    try {
+      await SupabaseService.insert('comments', {
+        calification: data.startNumber,
+        food: data.title,
+        review: data.review,
+        fullName: data.fullName,
+        email: data.email,
+      });
+      reset();
+      setRating(0);
+      setSubmitMessage({ type: 'success', text: 'Resena enviada correctamente' });
+      onReviewSubmitted?.();
+      setTimeout(() => setSubmitMessage(null), 3000);
+    } catch {
+      setSubmitMessage({ type: 'error', text: 'Error al enviar la resena. Intenta de nuevo.' });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleRating = (value: number) => {
@@ -64,7 +88,7 @@ const FormReview = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-[700px] w-[70%] h-full flex flex-col space-y-4 text-lg font-medium"
+      className="max-w-[700px] w-[90%] md:w-[70%] h-full flex flex-col space-y-4 text-lg font-medium"
     >
       <label>Calificación</label>
       <div className="flex space-x-2">
@@ -130,12 +154,19 @@ const FormReview = () => {
         {canSubmit && (
           <button
             type="submit"
-            className="w-[90px] bg-[#FF9500CC] text-[#000] rounded p-2 font-bold"
+            disabled={submitting}
+            className="w-[90px] bg-[#FF9500CC] text-[#000] rounded p-2 font-bold disabled:opacity-50"
           >
-            Enviar
+            {submitting ? '...' : 'Enviar'}
           </button>
         )}
       </div>
+
+      {submitMessage && (
+        <p className={submitMessage.type === 'success' ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>
+          {submitMessage.text}
+        </p>
+      )}
     </form>
   );
 };

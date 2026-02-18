@@ -2,12 +2,12 @@ import Image from 'next/image';
 import DinnersSVG from '../../../public/comensales.svg';
 import IngredientsSVG from '../../../public/ingredients.svg';
 interface ISuggestion {
-  title: string;
-  description: string;
-  price: number;
-  ingredients?: string;
-  dinners?: number;
-  imgSrc: string;
+  title: string | null;
+  description: string | null;
+  price: number | null;
+  ingredients?: string | null;
+  dinners?: number | null;
+  imageURL: string | null;
 }
 
 export default function SuggestModal({
@@ -16,7 +16,9 @@ export default function SuggestModal({
 }: {
   suggestion: ISuggestion;
   onClose: () => void;
-}) {
+  }) {
+  const imgSrc = suggestion.imageURL;
+  const title = suggestion.title ?? 'Sin titulo';
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="relative bg-white rounded-2xl shadow-xl p-6 w-[90%] max-w-md">
@@ -28,16 +30,18 @@ export default function SuggestModal({
           ×
         </button>
         {/* Info */}
-        <h2 className="text-xl font-bold">{suggestion.title}</h2>
+        <h2 className="text-xl font-bold">{title}</h2>
         {/* Imagen */}
-        <div className="relative w-full h-48 mb-4">
-          <Image
-            src={suggestion.imgSrc}
-            alt={suggestion.title}
-            fill
-            className="object-cover rounded-xl"
-          />
-        </div>
+        {imgSrc && (
+          <div className="relative w-full h-48 mb-4">
+            <Image
+              src={imgSrc}
+              alt={title}
+              fill
+              className="object-cover rounded-xl"
+            />
+          </div>
+        )}
 
 
 
@@ -65,7 +69,7 @@ export default function SuggestModal({
         </div>
         <div className="mt-4 flex justify-center">
           <span className="text-lg font-bold text-black ml-40">
-            ${suggestion.price}
+            ${suggestion.price ?? 0}
           </span>
         </div>
       </div>

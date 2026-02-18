@@ -1,11 +1,11 @@
 import Image from 'next/image';
 interface ISuggetionsItems {
-  title: string;
-  description: string;
-  price: number;
-  ingredients?: string;
-  dinners?: number;
-  imgSrc: string;
+  title: string | null;
+  description: string | null;
+  price: number | null;
+  ingredients?: string | null;
+  dinners?: number |null;
+  imgSrc: string | null;
 }
 const SuggestContainer = ({
   title,
@@ -32,9 +32,8 @@ const SuggestContainer = ({
         <Image
           fill
           className="object-cover w-full h-full rounded-r-lg"
-          src={imgSrc}
-          // src="https://cdn7.kiwilimon.com/recetaimagen/13784/640x426/6139.jpg.webp"
-          alt={imgSrc}
+          src={imgSrc as string}
+          alt={imgSrc as string}
         />
       </div>
     </div>

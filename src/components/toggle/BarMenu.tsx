@@ -9,18 +9,22 @@ const toggleBarOptions = [
   {
     title: "Sugerencias",
     imgSrc: SugerenciasSvg,
+    href: "/suggestions",
   },
   {
     title: "Comidas",
     imgSrc: FoodSvg,
+    href: "/foods",
   },
   {
     title: "Bebidas",
     imgSrc: DrinksSvg,
+    href: "/drinks",
   },
   {
     title: "Tragos",
     imgSrc: CoctelSvg,
+    href: "/coctels",
   }
 ]
 
@@ -30,30 +34,32 @@ const ToggleBarMenu = () => {
       {toggleBarOptions.map((option, index) => (
         <Link
           key={index}
-          href={`/${option.title.toLowerCase()}`}
+          href={option.href}
           className="flex items-center gap-2 text-[#000] hover:bg-secondary-100 p-2 transition"
         >
           <Image src={option.imgSrc} alt={option.title} width={24} height={24} />
           <span className="text-sm font-medium">{option.title}</span>
         </Link>
       ))}
-      {/* <div className="w-full h-[1px] bg-secondary-200"></div>
-      <Link 
-        href={"/reseñas"}
-        className="flex items-center gap-2 hover:bg-secondary-100 p-2 transition"
-
+      <div className="w-full h-[1px] bg-secondary-200"></div>
+      <Link
+        href="/location"
+        className="flex items-center gap-2 text-[#000] hover:bg-secondary-100 p-2 transition"
       >
-      <span className="text-sm font-medium">Ubicación</span>
-
+        <span className="text-sm font-medium">Ubicacion</span>
       </Link>
-      <Link 
-        href={"/reseñas"}
-        className="flex items-center gap-2 hover:bg-secondary-100 p-2 transition"
-
+      <Link
+        href="/review"
+        className="flex items-center gap-2 text-[#000] hover:bg-secondary-100 p-2 transition"
       >
-      <span className="text-sm font-medium">Reseñas</span>
-
-      </Link> */}
+        <span className="text-sm font-medium">Resenas</span>
+      </Link>
+      <Link
+        href="/about"
+        className="flex items-center gap-2 text-[#000] hover:bg-secondary-100 p-2 transition"
+      >
+        <span className="text-sm font-medium">Sobre nosotros</span>
+      </Link>
     </div>
   )
 }

@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { KeyboardEvent, memo, useState } from 'react';
 interface Dish {
-  id: string;
-  title: string;
+  id: number;
+  title: string | null;
   description?: string | null;
-  price: number;
+  price: number| null;
 }
 
 interface ToggleFoodOptionsProps {
