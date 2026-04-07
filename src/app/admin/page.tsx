@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import SupabaseService from '@/lib/supabase/service';
 import { Database } from '@/lib/supabase/database';
+import { useAuth } from '@/hooks/useAuth';
 
 type Comment = Database['public']['Tables']['comments']['Row'];
 
@@ -22,6 +23,7 @@ const statCards = [
 ] as const;
 
 export default function AdminDashboardPage() {
+  const { user } = useAuth();
   const [stats, setStats] = useState<Stats>({
     totalFoods: 0,
     totalSuggestions: 0,
@@ -29,6 +31,32 @@ export default function AdminDashboardPage() {
     avgCalification: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [embedStatus, setEmbedStatus] = useState<{
+    state: 'idle' | 'loading' | 'success' | 'error';
+    message?: string;
+  }>({ state: 'idle' });
+
+  const handleReEmbed = async () => {
+    if (!user) return;
+    setEmbedStatus({ state: 'loading' });
+    try {
+      const { data: { session } } = await SupabaseService.client.auth.getSession();
+      if (!session) throw new Error('Sin sesion activa');
+
+      const res = await fetch('/api/admin/re-embed', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'Error desconocido');
+      setEmbedStatus({ state: 'success', message: json.message });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Error desconocido';
+      setEmbedStatus({ state: 'error', message: msg });
+    } finally {
+      setTimeout(() => setEmbedStatus({ state: 'idle' }), 4000);
+    }
+  };
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -135,6 +163,46 @@ export default function AdminDashboardPage() {
             </span>
           </Link>
         </div>
+      </div>
+
+      {/* Sincronizacion del agente RAG */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-base font-semibold text-gray-800">
+              Agente de IA — Sincronizacion
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Cada vez que agregues, edites o elimines comidas o sugerencias,
+              resincroniza para que el asistente virtual use los datos actualizados.
+            </p>
+          </div>
+          <button
+            onClick={handleReEmbed}
+            disabled={embedStatus.state === 'loading'}
+            className="flex-shrink-0 px-4 py-2 bg-secondary-600 hover:bg-secondary-700 text-white text-sm font-medium rounded-lg transition disabled:opacity-50 flex items-center gap-2"
+          >
+            {embedStatus.state === 'loading' ? (
+              <>
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Procesando...
+              </>
+            ) : (
+              'Resincronizar embeddings'
+            )}
+          </button>
+        </div>
+
+        {embedStatus.state === 'success' && (
+          <p className="mt-3 text-sm text-green-600 font-medium">
+            ✓ {embedStatus.message}
+          </p>
+        )}
+        {embedStatus.state === 'error' && (
+          <p className="mt-3 text-sm text-red-600 font-medium">
+            ✗ {embedStatus.message}
+          </p>
+        )}
       </div>
     </div>
   );

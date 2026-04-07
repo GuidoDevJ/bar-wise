@@ -1,5 +1,6 @@
 import MainFooter from "../footer/MainFooter";
 import Header from "../header/Header";
+import ChatWidgetWrapper from "../chat/ChatWidgetWrapper";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       </main>
 
       <MainFooter />
+      <ChatWidgetWrapper />
     </div>
   );
 };

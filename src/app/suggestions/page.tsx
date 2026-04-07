@@ -20,8 +20,8 @@ export default function SuggestionsPage() {
   return (
     <PageTransition>
       <div className="flex flex-col gap-4 p-4">
-        {suggestions.map((sug, idx) => (
-          <div key={idx} onClick={() => setSelected(sug)} className="cursor-pointer">
+        {suggestions.map((sug) => (
+          <div key={sug.id} onClick={() => setSelected(sug)} className="cursor-pointer">
             <SuggestContainer
               description={sug.description}
               price={sug.price}

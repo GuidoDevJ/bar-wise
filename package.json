@@ -7,9 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "tsx --env-file=.env scripts/seed.ts"
+    "seed": "tsx --env-file=.env scripts/seed.ts",
+    "embed": "tsx --env-file=.env scripts/embed.ts"
   },
   "dependencies": {
+    "@anthropic-ai/bedrock-sdk": "^0.26.4",
+    "@anthropic-ai/sdk": "^0.80.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.1024.0",
     "@supabase/supabase-js": "^2.57.4",
     "clsx": "^2.1.1",
     "framer-motion": "^12.7.4",

@@ -6,6 +6,7 @@ import { Database } from '@/lib/supabase/database';
 import DataTable, { Column } from '@/components/admin/DataTable';
 import Modal from '@/components/admin/Modal';
 import FoodForm from '@/components/admin/forms/FoodForm';
+import { syncUpsert, syncDelete } from '@/lib/embedSync';
 
 type Food = Database['public']['Tables']['foods']['Row'];
 
@@ -62,6 +63,8 @@ export default function AdminFoodsPage() {
     if (!deleteConfirm) return;
     try {
       await SupabaseService.delete('foods', deleteConfirm.id);
+      // Sync: elimina el embedding del item borrado
+      void syncDelete('food', deleteConfirm.id);
       setDeleteConfirm(null);
       fetchFoods();
     } catch {
@@ -81,8 +84,12 @@ export default function AdminFoodsPage() {
       };
       if (editing) {
         await SupabaseService.update('foods', editing.id, payload);
+        // Sync: actualiza solo el embedding de este item
+        void syncUpsert('food', { ...payload, id: editing.id });
       } else {
-        await SupabaseService.insert('foods', payload);
+        const created = await SupabaseService.insert('foods', payload) as { id: number } | null;
+        // Sync: crea el embedding del nuevo item
+        void syncUpsert('food', { ...payload, id: created?.id });
       }
       setModalOpen(false);
       setEditing(null);

@@ -7,6 +7,7 @@ import { Database } from '@/lib/supabase/database';
 import DataTable, { Column } from '@/components/admin/DataTable';
 import Modal from '@/components/admin/Modal';
 import SuggestionForm from '@/components/admin/forms/SuggestionForm';
+import { syncUpsert, syncDelete } from '@/lib/embedSync';
 
 type Suggestion = Database['public']['Tables']['suggestions']['Row'];
 
@@ -88,6 +89,8 @@ export default function AdminSuggestionsPage() {
     if (!deleteConfirm) return;
     try {
       await SupabaseService.delete('suggestions', deleteConfirm.id);
+      // Sync: elimina el embedding del item borrado
+      void syncDelete('suggestion', deleteConfirm.id);
       setDeleteConfirm(null);
       fetchSuggestions();
     } catch {
@@ -100,8 +103,12 @@ export default function AdminSuggestionsPage() {
     try {
       if (editing) {
         await SupabaseService.update('suggestions', editing.id, data);
+        // Sync: actualiza solo el embedding de este item
+        void syncUpsert('suggestion', { ...data, id: editing.id });
       } else {
-        await SupabaseService.insert('suggestions', data);
+        const created = await SupabaseService.insert('suggestions', data) as { id: number } | null;
+        // Sync: crea el embedding del nuevo item
+        void syncUpsert('suggestion', { ...data, id: created?.id });
       }
       setModalOpen(false);
       setEditing(null);
