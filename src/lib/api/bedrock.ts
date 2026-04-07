@@ -4,14 +4,20 @@ import {
   InvokeModelCommand,
 } from '@aws-sdk/client-bedrock-runtime';
 
-if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+if (
+  !process.env.AWS_ACCESS_KEY_ID ||
+  !process.env.AWS_SECRET_ACCESS_KEY ||
+  !process.env.AWS_REGION ||
+  !process.env.BEDROCK_MODEL_ID ||
+  !process.env.BEDROCK_EMBED_MODEL_ID
+) {
   throw new Error(
-    'Missing required AWS credentials: AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY must be set'
+    'Missing required env vars: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, BEDROCK_MODEL_ID, BEDROCK_EMBED_MODEL_ID'
   );
 }
 
 const awsConfig = {
-  region: process.env.AWS_REGION ?? 'us-east-1',
+  region: process.env.AWS_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -30,7 +36,7 @@ export const CLAUDE_MODEL = process.env.BEDROCK_MODEL_ID!;
 
 export async function embedText(text: string): Promise<number[]> {
   const command = new InvokeModelCommand({
-    modelId: 'amazon.titan-embed-text-v2:0',
+    modelId: process.env.BEDROCK_EMBED_MODEL_ID!,
     contentType: 'application/json',
     accept: 'application/json',
     body: JSON.stringify({

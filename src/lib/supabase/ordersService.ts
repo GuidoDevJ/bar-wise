@@ -13,9 +13,12 @@ type OrderStatus = Database['public']['Enums']['OrderStatus'];
 export type OrderWithItems = OrderRow & { order_items: OrderItemRow[] };
 
 function getClient() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('Missing required env vars: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY');
+  }
   return createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 }
 
@@ -45,7 +48,7 @@ export const ordersService = {
   async createOrder(sessionId: string, tableNumber: string): Promise<OrderRow> {
     const { data, error } = await getClient()
       .from('orders')
-      .insert({ session_id: sessionId, table_number: tableNumber, status: 'pending' })
+      .insert({ session_id: sessionId, table_number: tableNumber, status: 'pending' } as never)
       .select()
       .single();
 
@@ -72,7 +75,7 @@ export const ordersService = {
 
     const { data, error } = await getClient()
       .from('order_items')
-      .insert({ order_id: order.id, food_title: foodTitle, quantity, notes })
+      .insert({ order_id: order.id, food_title: foodTitle, quantity, notes } as never)
       .select()
       .single();
 
@@ -109,7 +112,7 @@ export const ordersService = {
 
     const { data, error } = await getClient()
       .from('orders')
-      .update({ status: 'confirmed', updated_at: new Date().toISOString() })
+      .update({ status: 'confirmed', updated_at: new Date().toISOString() } as never)
       .eq('id', order.id)
       .select()
       .single();
@@ -133,7 +136,7 @@ export const ordersService = {
   async updateStatus(orderId: string, status: OrderStatus): Promise<OrderRow> {
     const { data, error } = await getClient()
       .from('orders')
-      .update({ status, updated_at: new Date().toISOString() })
+      .update({ status, updated_at: new Date().toISOString() } as never)
       .eq('id', orderId)
       .select()
       .single();
