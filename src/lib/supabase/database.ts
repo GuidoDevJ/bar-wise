@@ -9,6 +9,64 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      orders: {
+        Row: {
+          id: string;
+          session_id: string;
+          table_number: string;
+          status: Database['public']['Enums']['OrderStatus'];
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          session_id: string;
+          table_number: string;
+          status?: Database['public']['Enums']['OrderStatus'];
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          session_id?: string;
+          table_number?: string;
+          status?: Database['public']['Enums']['OrderStatus'];
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      order_items: {
+        Row: {
+          id: number;
+          order_id: string;
+          food_id: number | null;
+          food_title: string;
+          quantity: number;
+          unit_price: number | null;
+          notes: string | null;
+        };
+        Insert: {
+          id?: number;
+          order_id: string;
+          food_id?: number | null;
+          food_title: string;
+          quantity?: number;
+          unit_price?: number | null;
+          notes?: string | null;
+        };
+        Update: {
+          id?: number;
+          order_id?: string;
+          food_id?: number | null;
+          food_title?: string;
+          quantity?: number;
+          unit_price?: number | null;
+          notes?: string | null;
+        };
+      };
       suggestions: {
         Row: {
           id: number;
@@ -95,6 +153,7 @@ export interface Database {
     };
 
     Enums: {
+      OrderStatus: 'pending' | 'confirmed' | 'in_progress' | 'done' | 'cancelled';
       FoodTypes: 'COMIDAS' | 'TRAGOS' | 'BEBIDAS';
       SubFoodTypes:
         | 'ENTRADAS'

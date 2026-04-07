@@ -26,7 +26,7 @@ export const claude = new AnthropicBedrock({
   awsRegion: awsConfig.region,
 });
 
-export const CLAUDE_MODEL = process.env.BEDROCK_MODEL_ID;
+export const CLAUDE_MODEL = process.env.BEDROCK_MODEL_ID!;
 
 export async function embedText(text: string): Promise<number[]> {
   const command = new InvokeModelCommand({

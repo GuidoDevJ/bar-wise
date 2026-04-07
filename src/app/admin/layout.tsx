@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 const navItems = [
   { label: 'Dashboard', href: '/admin', icon: '📊' },
+  { label: 'Pedidos', href: '/admin/orders', icon: '🛒' },
   { label: 'Comidas', href: '/admin/foods', icon: '🍽️' },
   { label: 'Sugerencias', href: '/admin/suggestions', icon: '⭐' },
   { label: 'Resenas', href: '/admin/comments', icon: '💬' },

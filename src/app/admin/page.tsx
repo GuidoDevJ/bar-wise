@@ -13,6 +13,7 @@ interface Stats {
   totalSuggestions: number;
   totalComments: number;
   avgCalification: number;
+  pendingOrders: number;
 }
 
 const statCards = [
@@ -20,6 +21,7 @@ const statCards = [
   { key: 'totalSuggestions', label: 'Sugerencias', href: '/admin/suggestions', color: 'bg-yellow-100 text-yellow-700' },
   { key: 'totalComments', label: 'Resenas', href: '/admin/comments', color: 'bg-blue-100 text-blue-700' },
   { key: 'avgCalification', label: 'Calificacion Promedio', href: '/admin/comments', color: 'bg-green-100 text-green-700' },
+  { key: 'pendingOrders', label: 'Pedidos Pendientes', href: '/admin/orders', color: 'bg-orange-100 text-orange-700' },
 ] as const;
 
 export default function AdminDashboardPage() {
@@ -29,6 +31,7 @@ export default function AdminDashboardPage() {
     totalSuggestions: 0,
     totalComments: 0,
     avgCalification: 0,
+    pendingOrders: 0,
   });
   const [loading, setLoading] = useState(true);
   const [embedStatus, setEmbedStatus] = useState<{
@@ -61,10 +64,17 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [foods, suggestions, comments] = await Promise.all([
+        const { data: { session } } = await SupabaseService.client.auth.getSession();
+
+        const [foods, suggestions, comments, ordersRes] = await Promise.all([
           SupabaseService.getAll('foods'),
           SupabaseService.getAllSuggestions(),
           SupabaseService.getAllComments() as Promise<Comment[]>,
+          session
+            ? fetch('/api/admin/orders', {
+                headers: { Authorization: `Bearer ${session.access_token}` },
+              }).then((r) => r.json())
+            : Promise.resolve([]),
         ]);
 
         const ratings = comments
@@ -75,11 +85,18 @@ export default function AdminDashboardPage() {
             ? ratings.reduce((a, b) => a + b, 0) / ratings.length
             : 0;
 
+        const pending = Array.isArray(ordersRes)
+          ? ordersRes.filter(
+              (o: { status: string }) => o.status === 'pending' || o.status === 'confirmed'
+            ).length
+          : 0;
+
         setStats({
           totalFoods: foods.length,
           totalSuggestions: suggestions.length,
           totalComments: comments.length,
           avgCalification: Math.round(avg * 10) / 10,
+          pendingOrders: pending,
         });
       } catch {
         /* silent */
@@ -94,6 +111,9 @@ export default function AdminDashboardPage() {
     if (key === 'avgCalification') {
       return value > 0 ? `${value} / 5 ★` : 'Sin datos';
     }
+    if (key === 'pendingOrders') {
+      return value > 0 ? `${value} activos` : 'Sin pedidos';
+    }
     return value.toString();
   };
 
@@ -107,13 +127,13 @@ export default function AdminDashboardPage() {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="h-28 bg-gray-100 rounded-xl animate-pulse" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {statCards.map((card) => (
             <Link
               key={card.key}
@@ -137,7 +157,15 @@ export default function AdminDashboardPage() {
         <h2 className="text-lg font-semibold text-gray-800 mb-4">
           Acciones rapidas
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <Link
+            href="/admin/orders"
+            className="p-4 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition text-center"
+          >
+            <span className="text-sm font-medium text-gray-700">
+              Ver Pedidos
+            </span>
+          </Link>
           <Link
             href="/admin/foods"
             className="p-4 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition text-center"
