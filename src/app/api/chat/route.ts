@@ -107,6 +107,9 @@ async function executeTools(
 ): Promise<Array<{ type: 'tool_result'; tool_use_id: string; content: string }>> {
   return Promise.all(
     toolBlocks.map(async (tool) => {
+      const label = `[tool:${tool.name}]`;
+      console.log(`${label} input:`, JSON.stringify(tool.input));
+
       let content: string;
       try {
         switch (tool.name) {
@@ -158,10 +161,12 @@ async function executeTools(
           default:
             content = JSON.stringify({ error: 'Herramienta desconocida' });
         }
+
+        console.log(`${label} result:`, content);
       } catch (err) {
-        content = JSON.stringify({
-          error: err instanceof Error ? err.message : 'Error al ejecutar la operación',
-        });
+        const errorMsg = err instanceof Error ? err.message : 'Error al ejecutar la operación';
+        console.error(`${label} ERROR — sessionId: ${sessionId}`, err);
+        content = JSON.stringify({ error: errorMsg });
       }
       return { type: 'tool_result' as const, tool_use_id: tool.id, content };
     })
@@ -208,6 +213,9 @@ REGLAS ESTRICTAS:
 ${context ? `Información relevante del menú:\n\n${context}` : 'No encontré información específica en el menú para esta consulta.'}`;
 
     // 3. Agentic loop — sin streaming, respuesta completa al terminar
+    const requestId = crypto.randomUUID().slice(0, 8);
+    console.log(`[chat:${requestId}] session=${safeSessionId} message="${message.slice(0, 80)}"`);
+
     let loopMessages = [...history, { role: 'user' as const, content: message }];
     let finalText = '';
     const MAX_ROUNDS = 6;
@@ -224,6 +232,11 @@ ${context ? `Información relevante del menú:\n\n${context}` : 'No encontré in
       const toolBlocks = response.content
         .filter((b) => b.type === 'tool_use')
         .map((b) => b as unknown as ToolUseBlock);
+
+      console.log(
+        `[chat:${requestId}] round=${round} stop_reason=${response.stop_reason}`,
+        toolBlocks.length ? `tools=[${toolBlocks.map((t) => t.name).join(', ')}]` : 'no tools'
+      );
 
       // Acumular texto de esta vuelta
       for (const block of response.content) {
@@ -243,6 +256,8 @@ ${context ? `Información relevante del menú:\n\n${context}` : 'No encontré in
         { role: 'user' as const, content: toolResults as never },
       ];
     }
+
+    console.log(`[chat:${requestId}] done — response length=${finalText.length}`);
 
     return new Response(finalText, {
       headers: { 'Content-Type': 'text/plain; charset=utf-8' },
