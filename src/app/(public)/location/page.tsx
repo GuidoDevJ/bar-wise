@@ -1,7 +1,7 @@
 'use client';
 import CurrentLocation from "@/components/maps/currentLocation";
 import Image from "next/image";
-import LocationSVG from "../../../public/location.svg";
+import LocationSVG from "../../../../public/location.svg";
 
 
 export default function Location() {

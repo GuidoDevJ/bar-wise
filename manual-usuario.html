@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bar Wise — Manual de Usuario</title>
+  <style>
+    /* ────────────────────────────────────────────────
+       RESET & BASE
+    ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --amber:   #d97706;
+      --amber-l: #fef3c7;
+      --amber-d: #92400e;
+      --slate:   #1e293b;
+      --slate-l: #334155;
+      --gray:    #64748b;
+      --gray-l:  #f1f5f9;
+      --green:   #16a34a;
+      --red:     #dc2626;
+      --blue:    #2563eb;
+      --white:   #ffffff;
+      --border:  #e2e8f0;
+      --shadow:  0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08);
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.6;
+      color: var(--slate);
+      background: var(--white);
+    }
+
+    /* ────────────────────────────────────────────────
+       PRINT LAYOUT
+    ──────────────────────────────────────────────── */
+    @media print {
+      body { font-size: 9.5pt; }
+      .page-break { page-break-before: always; }
+      .no-break   { page-break-inside: avoid; }
+      header.cover { page-break-after: always; }
+      nav.toc      { page-break-after: always; }
+      @page { margin: 2cm 2.2cm; }
+    }
+
+    /* ────────────────────────────────────────────────
+       COVER PAGE
+    ──────────────────────────────────────────────── */
+    header.cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, var(--slate) 0%, #0f172a 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 60px 40px;
+    }
+
+    header.cover .logo-ring {
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      background: var(--amber);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 32px;
+      box-shadow: 0 0 0 12px rgba(217,119,6,.25);
+    }
+
+    header.cover .logo-ring svg { width: 60px; height: 60px; fill: var(--white); }
+
+    header.cover h1 {
+      font-size: 38pt;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+
+    header.cover h1 span { color: var(--amber); }
+
+    header.cover .subtitle {
+      font-size: 13pt;
+      color: #94a3b8;
+      margin-bottom: 48px;
+      max-width: 480px;
+    }
+
+    header.cover .meta-box {
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 12px;
+      padding: 24px 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    header.cover .meta-box .item label {
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #64748b;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    header.cover .meta-box .item span {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    header.cover .badge {
+      background: var(--amber);
+      color: var(--white);
+      border-radius: 20px;
+      padding: 6px 20px;
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ────────────────────────────────────────────────
+       TABLE OF CONTENTS
+    ──────────────────────────────────────────────── */
+    nav.toc {
+      min-height: 100vh;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    nav.toc h2 {
+      font-size: 22pt;
+      font-weight: 800;
+      color: var(--slate);
+      margin-bottom: 8px;
+    }
+
+    nav.toc .toc-rule {
+      width: 60px; height: 4px;
+      background: var(--amber);
+      border-radius: 2px;
+      margin-bottom: 40px;
+    }
+
+    nav.toc ol { list-style: none; }
+
+    nav.toc > ol > li {
+      border-bottom: 1px dashed var(--border);
+      padding: 10px 0;
+    }
+
+    nav.toc > ol > li > a {
+      display: flex;
+      justify-content: space-between;
+      text-decoration: none;
+      color: var(--slate);
+      font-size: 12pt;
+      font-weight: 700;
+    }
+
+    nav.toc > ol > li > a .pg { color: var(--gray); font-weight: 400; }
+
+    nav.toc > ol > li > ol {
+      margin-top: 6px;
+      margin-left: 20px;
+      list-style: none;
+    }
+
+    nav.toc > ol > li > ol > li > a {
+      display: flex;
+      justify-content: space-between;
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 9.5pt;
+      padding: 3px 0;
+    }
+
+    /* ────────────────────────────────────────────────
+       MAIN CONTENT WRAPPER
+    ──────────────────────────────────────────────── */
+    main { max-width: 900px; margin: 0 auto; padding: 60px 60px 80px; }
+
+    /* ────────────────────────────────────────────────
+       SECTION HEADINGS
+    ──────────────────────────────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      margin-top: 64px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-header .icon-box {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-header .icon-box.amber { background: var(--amber-l); }
+    .section-header .icon-box.blue  { background: #dbeafe; }
+    .section-header .icon-box.green { background: #dcfce7; }
+    .section-header .icon-box.red   { background: #fee2e2; }
+    .section-header .icon-box.slate { background: var(--gray-l); }
+
+    .section-header .icon-box svg { width: 26px; height: 26px; }
+    .section-header .icon-box.amber svg { stroke: var(--amber-d); }
+    .section-header .icon-box.blue  svg { stroke: #1d4ed8; }
+    .section-header .icon-box.green svg { stroke: #15803d; }
+    .section-header .icon-box.red   svg { stroke: #b91c1c; }
+    .section-header .icon-box.slate svg { stroke: var(--slate); }
+
+    .section-header .num {
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gray);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .section-header h2 {
+      font-size: 18pt;
+      font-weight: 800;
+      color: var(--slate);
+    }
+
+    h3 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: var(--slate);
+      margin: 28px 0 12px;
+    }
+
+    h4 {
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--slate-l);
+      margin: 20px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    p { margin-bottom: 12px; }
+
+    /* ────────────────────────────────────────────────
+       ROLE BADGE
+    ──────────────────────────────────────────────── */
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .role-badge.user  { background: #dbeafe; color: #1e40af; }
+    .role-badge.admin { background: #fef3c7; color: #92400e; }
+
+    .role-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .role-badge.user::before  { background: #2563eb; }
+    .role-badge.admin::before { background: var(--amber); }
+
+    /* ────────────────────────────────────────────────
+       CALLOUT BOXES
+    ──────────────────────────────────────────────── */
+    .callout {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .callout svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+
+    .callout.info    { background: #eff6ff; border-left: 4px solid #3b82f6; }
+    .callout.info svg    { stroke: #2563eb; }
+    .callout.warn    { background: var(--amber-l); border-left: 4px solid var(--amber); }
+    .callout.warn svg    { stroke: var(--amber-d); }
+    .callout.success { background: #f0fdf4; border-left: 4px solid #22c55e; }
+    .callout.success svg { stroke: #16a34a; }
+    .callout.danger  { background: #fef2f2; border-left: 4px solid #ef4444; }
+    .callout.danger svg  { stroke: #dc2626; }
+
+    .callout strong { display: block; margin-bottom: 4px; font-size: 9.5pt; }
+
+    /* ────────────────────────────────────────────────
+       STEP LIST
+    ──────────────────────────────────────────────── */
+    .step-list { list-style: none; margin: 16px 0; }
+
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .step-list li .step-num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--amber);
+      color: var(--white);
+      font-size: 8.5pt;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-list li .step-num.blue  { background: var(--blue); }
+    .step-list li .step-num.green { background: var(--green); }
+    .step-list li .step-num.slate { background: var(--slate); }
+
+    /* ────────────────────────────────────────────────
+       FEATURE CARDS GRID
+    ──────────────────────────────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .feature-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .feature-card .card-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .feature-card .card-icon svg { width: 22px; height: 22px; }
+
+    .feature-card.amber .card-icon { background: var(--amber-l); }
+    .feature-card.amber .card-icon svg { stroke: var(--amber-d); }
+    .feature-card.blue  .card-icon { background: #dbeafe; }
+    .feature-card.blue  .card-icon svg { stroke: #1d4ed8; }
+    .feature-card.green .card-icon { background: #dcfce7; }
+    .feature-card.green .card-icon svg { stroke: #15803d; }
+    .feature-card.slate .card-icon { background: var(--gray-l); }
+    .feature-card.slate .card-icon svg { stroke: var(--slate); }
+    .feature-card.red   .card-icon { background: #fee2e2; }
+    .feature-card.red   .card-icon svg { stroke: #b91c1c; }
+
+    .feature-card h4 { margin: 0 0 6px; text-transform: none; letter-spacing: 0; font-size: 10.5pt; }
+    .feature-card p  { font-size: 9pt; color: var(--gray); margin: 0; }
+
+    /* ────────────────────────────────────────────────
+       TABLE
+    ──────────────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 9.5pt;
+    }
+
+    thead tr { background: var(--slate); color: var(--white); }
+    thead th { padding: 10px 14px; text-align: left; font-weight: 700; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    tbody tr:nth-child(even) { background: var(--gray-l); }
+    tbody td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* ────────────────────────────────────────────────
+       STATUS BADGES
+    ──────────────────────────────────────────────── */
+    .status {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status.pending     { background: #fef9c3; color: #854d0e; }
+    .status.confirmed   { background: #dbeafe; color: #1e40af; }
+    .status.in-progress { background: #f3e8ff; color: #6b21a8; }
+    .status.done        { background: #dcfce7; color: #14532d; }
+    .status.cancelled   { background: #fee2e2; color: #7f1d1d; }
+
+    /* ────────────────────────────────────────────────
+       FLOW DIAGRAM (text-based)
+    ──────────────────────────────────────────────── */
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      margin: 20px 0;
+      background: var(--gray-l);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .flow-step .bubble {
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 8.5pt;
+      font-weight: 700;
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .flow-step .label {
+      font-size: 7.5pt;
+      color: var(--gray);
+    }
+
+    .flow-arrow {
+      font-size: 14pt;
+      color: var(--gray);
+      padding: 0 6px;
+      margin-bottom: 18px;
+    }
+
+    /* ────────────────────────────────────────────────
+       BULLET LIST
+    ──────────────────────────────────────────────── */
+    ul.check { list-style: none; margin: 12px 0; }
+    ul.check li {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 8px;
+      font-size: 9.5pt;
+    }
+    ul.check li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    /* ────────────────────────────────────────────────
+       SCREEN MOCKUP (inline diagram)
+    ──────────────────────────────────────────────── */
+    .screen-mock {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 20px 0;
+      box-shadow: var(--shadow);
+    }
+
+    .screen-mock .bar {
+      background: var(--slate);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .screen-mock .bar span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .screen-mock .bar .r { background: #ef4444; }
+    .screen-mock .bar .y { background: #eab308; }
+    .screen-mock .bar .g { background: #22c55e; }
+
+    .screen-mock .bar .url {
+      background: rgba(255,255,255,.1);
+      border-radius: 4px;
+      padding: 2px 12px;
+      font-size: 7.5pt;
+      color: #94a3b8;
+      margin-left: 8px;
+    }
+
+    .screen-mock .content {
+      padding: 20px;
+      background: #f8fafc;
+      font-size: 9pt;
+    }
+
+    /* ────────────────────────────────────────────────
+       CHAT BUBBLE
+    ──────────────────────────────────────────────── */
+    .chat-demo { margin: 16px 0; }
+    .chat-msg {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .chat-msg.user { flex-direction: row-reverse; }
+    .chat-msg .avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10pt; font-weight: 800; flex-shrink: 0;
+    }
+    .chat-msg.ai   .avatar { background: var(--amber-l); color: var(--amber-d); }
+    .chat-msg.user .avatar { background: #dbeafe; color: #1e40af; }
+    .chat-msg .bubble {
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 9pt;
+      max-width: 80%;
+    }
+    .chat-msg.ai   .bubble { background: var(--white); border: 1px solid var(--border); }
+    .chat-msg.user .bubble { background: var(--slate); color: var(--white); }
+
+    /* ────────────────────────────────────────────────
+       DIVIDER
+    ──────────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* ────────────────────────────────────────────────
+       FOOTER (page)
+    ──────────────────────────────────────────────── */
+    footer.doc-footer {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray);
+      font-size: 8.5pt;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================
+     PORTADA
+================================================ -->
+<header class="cover">
+  <div class="logo-ring">
+    <!-- Beer glass icon -->
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 3h11l2 3-2 15H5L3 6l2-3zm0 0h14M7 8h8M8 12h6M9 16h4"/>
+    </svg>
+  </div>
+
+  <h1>Bar <span>Wise</span></h1>
+  <p class="subtitle">Sistema de Gestión y Menú Digital con Asistente IA</p>
+
+  <div class="meta-box">
+    <div class="item">
+      <label>Versión</label>
+      <span>1.0</span>
+    </div>
+    <div class="item">
+      <label>Fecha</label>
+      <span>Mayo 2026</span>
+    </div>
+    <div class="item">
+      <label>Clasificación</label>
+      <span>Uso Interno</span>
+    </div>
+  </div>
+
+  <span class="badge">Manual de Usuario</span>
+</header>
+
+<!-- ================================================
+     ÍNDICE
+================================================ -->
+<nav class="toc">
+  <h2>Índice de Contenidos</h2>
+  <div class="toc-rule"></div>
+  <ol>
+    <li>
+      <a href="#intro">
+        <span>1 · Introducción al Sistema</span>
+        <span class="pg">3</span>
+      </a>
+    </li>
+    <li>
+      <a href="#roles">
+        <span>2 · Roles de Usuario</span>
+        <span class="pg">4</span>
+      </a>
+    </li>
+    <li>
+      <a href="#cliente">
+        <span>3 · Funcionalidades — Usuario Cliente</span>
+        <span class="pg">5</span>
+      </a>
+      <ol>
+        <li><a href="#c-menu"><span>3.1 · Navegación del Menú</span><span class="pg">5</span></a></li>
+        <li><a href="#c-chat"><span>3.2 · Asistente IA y Pedidos</span><span class="pg">7</span></a></li>
+        <li><a href="#c-Reseñas"><span>3.3 · Reseñas y Calificaciones</span><span class="pg">9</span></a></li>
+        <li><a href="#c-info"><span>3.4 · Información del Bar</span><span class="pg">10</span></a></li>
+      </ol>
+    </li>
+    <li>
+      <a href="#admin">
+        <span>4 · Funcionalidades — Administrador</span>
+        <span class="pg">11</span>
+      </a>
+      <ol>
+        <li><a href="#a-login"><span>4.1 · Acceso al Panel Admin</span><span class="pg">11</span></a></li>
+        <li><a href="#a-dashboard"><span>4.2 · Dashboard</span><span class="pg">12</span></a></li>
+        <li><a href="#a-comidas"><span>4.3 · Gestión de Comidas</span><span class="pg">13</span></a></li>
+        <li><a href="#a-sugerencias"><span>4.4 · Gestión de Sugerencias</span><span class="pg">15</span></a></li>
+        <li><a href="#a-Reseñas"><span>4.5 · Gestión de Reseñas</span><span class="pg">17</span></a></li>
+        <li><a href="#a-pedidos"><span>4.6 · Gestión de Pedidos en Tiempo Real</span><span class="pg">18</span></a></li>
+        <li><a href="#a-rag"><span>4.7 · Sincronización del Asistente IA</span><span class="pg">21</span></a></li>
+      </ol>
+    </li>
+    <li>
+      <a href="#flujos">
+        <span>5 · Flujos de Proceso</span>
+        <span class="pg">22</span>
+      </a>
+    </li>
+    <li>
+      <a href="#glosario">
+        <span>6 · Glosario</span>
+        <span class="pg">24</span>
+      </a>
+    </li>
+  </ol>
+</nav>
+
+<!-- ================================================
+     CONTENIDO PRINCIPAL
+================================================ -->
+<main>
+
+  <!-- ─── 1. INTRODUCCIÓN ─────────────────────────── -->
+  <div class="section-header" id="intro">
+    <div class="icon-box amber">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <div>
+      <span class="num">Sección 1</span>
+      <h2>Introducción al Sistema</h2>
+    </div>
+  </div>
+
+  <p><strong>Bar Wise</strong> es un sistema de menú digital interactivo diseñado para bares y restaurantes. Permite a los clientes explorar el menú, hacer pedidos mediante un asistente de inteligencia artificial y dejar Reseñas, mientras que el equipo de administración gestiona el catálogo de productos y el estado de los pedidos en tiempo real.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card amber">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+      </div>
+      <h4>Menú Digital</h4>
+      <p>Categorías de comidas, bebidas y tragos con descripciones y precios actualizados.</p>
+    </div>
+    <div class="feature-card blue">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+      </div>
+      <h4>Asistente IA</h4>
+      <p>Chat inteligente para tomar pedidos, consultar el menú y resolver dudas de forma conversacional.</p>
+    </div>
+    <div class="feature-card green">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+      </div>
+      <h4>Pedidos en Tiempo Real</h4>
+      <p>Los pedidos llegan instantáneamente al panel de cocina con actualización automática de estados.</p>
+    </div>
+    <div class="feature-card slate">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <h4>Reseñas de Clientes</h4>
+      <p>Sistema de calificaciones y Reseñas para obtener retroalimentación de los clientes.</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div>
+      <strong>Acceso al Sistema</strong>
+      El sistema es accesible desde cualquier dispositivo con navegador web (computadora, tablet o celular). No requiere instalación adicional.
+    </div>
+  </div>
+
+
+  <!-- ─── 2. ROLES ─────────────────────────────────── -->
+  <div class="section-header page-break" id="roles">
+    <div class="icon-box blue">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+      </svg>
+    </div>
+    <div>
+      <span class="num">Sección 2</span>
+      <h2>Roles de Usuario</h2>
+    </div>
+  </div>
+
+  <p>Bar Wise define dos roles principales con distintos niveles de acceso y capacidades:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Rol</th>
+        <th>Acceso</th>
+        <th>Autenticación</th>
+        <th>Capacidades Principales</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="role-badge user">Cliente</span></td>
+        <td>Páginas públicas</td>
+        <td>Sin login requerido</td>
+        <td>Ver menú, hacer pedidos vía chat IA, dejar Reseñas, consultar ubicación</td>
+      </tr>
+      <tr>
+        <td><span class="role-badge admin">Administrador</span></td>
+        <td>Panel admin (<code>/admin</code>)</td>
+        <td>Email + Contraseña</td>
+        <td>Gestionar catálogo, ver y actualizar pedidos en tiempo real, moderar Reseñas, sincronizar IA</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div>
+      <strong>Acceso Admin Restringido</strong>
+      Si un usuario no autenticado intenta acceder a cualquier ruta <code>/admin/*</code>, el sistema lo redirige automáticamente a la pantalla de login.
+    </div>
+  </div>
+
+
+  <!-- ─── 3. CLIENTE ─────────────────────────────── -->
+  <div class="section-header page-break" id="cliente">
+    <div class="icon-box blue">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+    </div>
+    <div>
+      <span class="num">Sección 3</span>
+      <h2>Funcionalidades — Usuario Cliente</h2>
+    </div>
+  </div>
+
+  <p>Los clientes acceden al sistema sin necesidad de registrarse. Al ingresar al sitio, se les presenta una pantalla de inicio con las categorías principales del menú.</p>
+
+  <!-- 3.1 Menú -->
+  <h3 id="c-menu">3.1 · Navegación del Menú</h3>
+  <span class="role-badge user">Cliente</span>
+
+  <p style="margin-top:12px">El menú está organizado en tres grandes categorías accesibles desde la pantalla de inicio o el menú lateral:</p>
+
+  <div class="feature-grid">
+    <div class="feature-card amber">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+        </svg>
+      </div>
+      <h4>Comidas</h4>
+      <p>Entradas, principales, guarniciones, pizzas y sandwiches.</p>
+    </div>
+    <div class="feature-card blue">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0014 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 01-11.91 4.97"/>
+        </svg>
+      </div>
+      <h4>Bebidas</h4>
+      <p>Cervezas, vinos, espumantes y bebidas sin alcohol.</p>
+    </div>
+    <div class="feature-card green">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3m8 0h3a2 2 0 002-2v-3M12 8v8M8 12h8"/>
+        </svg>
+      </div>
+      <h4>Tragos</h4>
+      <p>Cócteles de autor y clásicos elaborados por el bartender.</p>
+    </div>
+    <div class="feature-card slate">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <h4>Sugerencias del Chef</h4>
+      <p>Platos destacados con imagen, descripción y precio especial.</p>
+    </div>
+  </div>
+
+  <h4>Cómo navegar el menú</h4>
+  <ul class="check">
+    <li>Desde la pantalla de inicio, hacer clic en la categoría deseada (Comidas, Bebidas, Tragos).</li>
+    <li>Los platos se muestran agrupados por subtipo en acordeones expandibles (hacer clic para desplegar).</li>
+    <li>Cada ítem muestra: <strong>nombre del plato</strong>, <strong>descripción</strong> y <strong>precio</strong>.</li>
+    <li>Las <strong>Sugerencias del Chef</strong> se muestran como tarjetas con imagen. Al hacer clic, se abre un modal con detalle completo.</li>
+    <li>El menú lateral (ícono de hamburguesa ☰) da acceso rápido a todas las secciones desde cualquier página.</li>
+  </ul>
+
+  <h4>Búsqueda en el menú</h4>
+  <ul class="check">
+    <li>La barra de búsqueda ubicada en el encabezado permite buscar cualquier plato o bebida por nombre.</li>
+    <li>Los resultados se actualizan en tiempo real mientras se escribe.</li>
+  </ul>
+
+  <div class="callout info">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div>
+      <strong>Consejo</strong>
+      El menú siempre refleja el catálogo actualizado por el administrador. Los precios y la disponibilidad se mantienen al día en tiempo real.
+    </div>
+  </div>
+
+
+  <!-- 3.2 Chat IA -->
+  <h3 id="c-chat" style="margin-top:40px">3.2 · Asistente IA y Sistema de Pedidos</h3>
+  <span class="role-badge user">Cliente</span>
+
+  <p style="margin-top:12px">Bar Wise cuenta con un asistente de inteligencia artificial disponible en todas las páginas públicas como un widget flotante en la esquina inferior derecha. El asistente puede responder preguntas sobre el menú y gestionar pedidos de forma conversacional.</p>
+
+  <div class="screen-mock">
+    <div class="bar">
+      <span class="r"></span><span class="y"></span><span class="g"></span>
+      <span class="url">barwise.app — Chat Asistente IA</span>
+    </div>
+    <div class="content">
+      <div class="chat-demo">
+        <div class="chat-msg ai">
+          <div class="avatar">🤖</div>
+          <div class="bubble">¡Hola! Soy el asistente de Bar Wise. ¿En qué puedo ayudarte? Puedo contarte sobre nuestro menú o ayudarte a hacer un pedido.</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="avatar">U</div>
+          <div class="bubble">Quiero pedir algo para comer</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="avatar">🤖</div>
+          <div class="bubble">¡Con gusto! ¿En qué número de mesa estás?</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="avatar">U</div>
+          <div class="bubble">Mesa 5</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="avatar">🤖</div>
+          <div class="bubble">Perfecto, abrí tu pedido para la Mesa 5. ¿Qué te gustaría pedir? Tenemos milanesas, pizzas, ensaladas y mucho más.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Qué puede hacer el asistente</h4>
+  <ul class="check">
+    <li>Responder preguntas sobre el menú, precios, ingredientes y horarios.</li>
+    <li>Buscar platos específicos ("¿tenés algo sin gluten?", "¿cuánto sale la milanesa?").</li>
+    <li>Crear un pedido para la mesa indicada.</li>
+    <li>Agregar múltiples ítems al pedido con cantidad y notas especiales.</li>
+    <li>Mostrar un resumen del pedido antes de confirmar.</li>
+    <li>Confirmar y enviar el pedido a cocina.</li>
+    <li>Modificar el pedido (quitar ítems) antes de confirmarlo.</li>
+  </ul>
+
+  <h4>Cómo realizar un pedido paso a paso</h4>
+  <ul class="step-list">
+    <li>
+      <span class="step-num">1</span>
+      <div>Hacer clic en el ícono de chat (esquina inferior derecha). El asistente se saluda y pregunta en qué puede ayudar.</div>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <div>Indicar que se desea realizar un pedido. El asistente preguntará el <strong>número de mesa</strong>.</div>
+    </li>
+    <li>
+      <span class="step-num">3</span>
+      <div>Informar el número de mesa (ej: "Mesa 4", "Barra", "VIP 2"). El asistente crea el pedido automáticamente.</div>
+    </li>
+    <li>
+      <span class="step-num">4</span>
+      <div>Indicar los platos deseados. Se puede agregar notas especiales (ej: "una milanesa sin sal", "pizza sin cebolla").</div>
+    </li>
+    <li>
+      <span class="step-num">5</span>
+      <div>Repetir el paso 4 para cada ítem adicional. El asistente irá confirmando cada agregado.</div>
+    </li>
+    <li>
+      <span class="step-num">6</span>
+      <div>Cuando se hayan agregado todos los ítems, el asistente mostrará un <strong>resumen del pedido con el total</strong>.</div>
+    </li>
+    <li>
+      <span class="step-num">7</span>
+      <div>Confirmar el pedido. El estado cambia a <span class="status confirmed">Confirmado</span> y el equipo de cocina lo recibe de inmediato.</div>
+    </li>
+  </ul>
+
+  <div class="callout success">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <div>
+      <strong>El asistente recuerda el pedido durante la sesión</strong>
+      Si se cierra el chat y se vuelve a abrir (sin cerrar el navegador), el historial de conversación y el pedido en curso se mantienen.
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div>
+      <strong>Una vez confirmado, el pedido no puede modificarse</strong>
+      Si necesitás hacer un cambio después de confirmar, debés comunicarlo directamente al mozo o al equipo del bar.
+    </div>
+  </div>
+
+
+  <!-- 3.3 Reseñas -->
+  <h3 id="c-Reseñas" style="margin-top:40px">3.3 · Reseñas y Calificaciones</h3>
+  <span class="role-badge user">Cliente</span>
+
+  <p style="margin-top:12px">Los clientes pueden dejar su opinión sobre la experiencia en el bar accediendo a la sección <strong>Reseñas</strong> desde el menú lateral.</p>
+
+  <h4>Cómo dejar una reseña</h4>
+  <ul class="step-list">
+    <li>
+      <span class="step-num blue">1</span>
+      <div>Navegar a la sección <strong>Reseñas</strong> desde el menú lateral.</div>
+    </li>
+    <li>
+      <span class="step-num blue">2</span>
+      <div>Completar el formulario con los siguientes campos:</div>
+    </li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr><th>Campo</th><th>Descripción</th><th>Obligatorio</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Calificación</td><td>Puntaje de 1 a 5 estrellas</td><td>Sí</td></tr>
+      <tr><td>Título</td><td>Título breve de la reseña</td><td>Sí</td></tr>
+      <tr><td>Plato</td><td>Nombre del plato o bebida probada</td><td>Sí</td></tr>
+      <tr><td>Reseña</td><td>Texto descriptivo de la experiencia</td><td>Sí</td></tr>
+      <tr><td>Nombre completo</td><td>Nombre del cliente</td><td>Sí</td></tr>
+      <tr><td>Email</td><td>Dirección de correo electrónico válida</td><td>Sí</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="step-list">
+    <li>
+      <span class="step-num blue">3</span>
+      <div>Hacer clic en <strong>Enviar reseña</strong>. La reseña se publica de inmediato en el listado público.</div>
+    </li>
+  </ul>
+
+  <ul class="check">
+    <li>Las Reseñas publicadas son visibles para todos los visitantes del sitio.</li>
+    <li>El promedio de calificaciones se muestra en el panel del administrador.</li>
+    <li>El administrador puede editar o eliminar Reseñas que no cumplan con las normas del establecimiento.</li>
+  </ul>
+
+
+  <!-- 3.4 Información -->
+  <h3 id="c-info" style="margin-top:40px">3.4 · Información del Bar</h3>
+  <span class="role-badge user">Cliente</span>
+
+  <p style="margin-top:12px">El sitio ofrece dos secciones informativas accesibles desde el menú lateral:</p>
+
+  <div class="feature-grid">
+    <div class="feature-card green">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h4>Ubicación</h4>
+      <p>Mapa interactivo con la ubicación del bar y la dirección completa.</p>
+    </div>
+    <div class="feature-card slate">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <h4>Sobre Nosotros</h4>
+      <p>Horarios de atención (por día de la semana) e información de contacto.</p>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Día</th><th>Horario</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Lunes a Viernes</td><td>Según configuración del establecimiento</td></tr>
+      <tr><td>Sábados</td><td>Según configuración del establecimiento</td></tr>
+      <tr><td>Domingos</td><td>Según configuración del establecimiento</td></tr>
+    </tbody>
+  </table>
+
+
+  <!-- ─── 4. ADMIN ──────────────────────────────────── -->
+  <div class="section-header page-break" id="admin">
+    <div class="icon-box amber">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    </div>
+    <div>
+      <span class="num">Sección 4</span>
+      <h2>Funcionalidades — Administrador</h2>
+    </div>
+  </div>
+
+  <p>El panel de administración provee las herramientas para gestionar el catálogo del bar, monitorear pedidos en tiempo real y mantener actualizado el asistente IA. El acceso está protegido con credenciales de seguridad.</p>
+
+
+  <!-- 4.1 Login -->
+  <h3 id="a-login">4.1 · Acceso al Panel Admin</h3>
+  <span class="role-badge admin">Administrador</span>
+
+  <p style="margin-top:12px">Para acceder al panel de administración:</p>
+
+  <ul class="step-list">
+    <li>
+      <span class="step-num">1</span>
+      <div>Navegar a la URL <code>/admin/login</code>.</div>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <div>Ingresar el <strong>correo electrónico</strong> y la <strong>contraseña</strong> asignados por el administrador del sistema.</div>
+    </li>
+    <li>
+      <span class="step-num">3</span>
+      <div>Hacer clic en <strong>Ingresar</strong>. Al autenticarse correctamente, se redirige automáticamente al Dashboard.</div>
+    </li>
+  </ul>
+
+  <div class="callout danger">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+    <div>
+      <strong>Credenciales Incorrectas</strong>
+      Si las credenciales son incorrectas, el sistema mostrará un mensaje de error. Las credenciales son asignadas por el equipo técnico y no se pueden recuperar desde el sitio.
+    </div>
+  </div>
+
+  <h4>Cerrar sesión</h4>
+  <p>Para cerrar la sesión de administrador, hacer clic en el botón <strong>Cerrar sesión</strong> disponible en el panel lateral. La sesión se cierra y se redirige a la pantalla de login.</p>
+
+
+  <!-- 4.2 Dashboard -->
+  <h3 id="a-dashboard" style="margin-top:40px">4.2 · Dashboard</h3>
+  <span class="role-badge admin">Administrador</span>
+
+  <p style="margin-top:12px">Al iniciar sesión, el administrador llega al Dashboard, que muestra un resumen del estado del sistema de un vistazo.</p>
+
+  <h4>Tarjetas de estadísticas</h4>
+
+  <table>
+    <thead>
+      <tr><th>Indicador</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Total de Comidas</strong></td><td>Cantidad de ítems publicados en el menú (comidas, bebidas y tragos).</td></tr>
+      <tr><td><strong>Sugerencias</strong></td><td>Cantidad de sugerencias del chef activas.</td></tr>
+      <tr><td><strong>Reseñas</strong></td><td>Total de Reseñas recibidas de clientes.</td></tr>
+      <tr><td><strong>Calificación Promedio</strong></td><td>Promedio de estrellas de todas las Reseñas (escala 1–5).</td></tr>
+      <tr><td><strong>Pedidos Pendientes</strong></td><td>Pedidos en estado <span class="status pending">Pendiente</span> que aún no fueron atendidos.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Accesos rápidos</h4>
+  <ul class="check">
+    <li>El Dashboard incluye botones de acceso directo a cada módulo de gestión: Comidas, Sugerencias, Reseñas y Pedidos.</li>
+    <li>Desde el panel lateral se puede navegar entre módulos en cualquier momento.</li>
+  </ul>
+
+  <h4>Botón de Resincronización del Asistente IA</h4>
+  <ul class="check">
+    <li>El Dashboard incluye un botón <strong>"Resincronizar embeddings"</strong> para actualizar el conocimiento del asistente IA.</li>
+    <li>Se muestra el estado del proceso: cargando, exitoso o con error.</li>
+    <li>Ver sección 4.7 para más detalle sobre cuándo usar esta función.</li>
+  </ul>
+
+
+  <!-- 4.3 Comidas -->
+  <h3 id="a-comidas" style="margin-top:40px">4.3 · Gestión de Comidas</h3>
+  <span class="role-badge admin">Administrador</span>
+
+  <p style="margin-top:12px">El módulo de Comidas permite administrar el catálogo completo de ítems del menú: comidas, bebidas y tragos. Se accede desde el menú lateral o el acceso rápido del Dashboard.</p>
+
+  <h4>Vista principal</h4>
+  <ul class="check">
+    <li>Se muestra una tabla con todos los ítems del catálogo.</li>
+    <li>Columnas: <strong>Título</strong>, <strong>Tipo</strong> (Comidas / Bebidas / Tragos), <strong>Sub-tipo</strong> y <strong>Precio</strong>.</li>
+    <li>Cada fila tiene botones de acción: <strong>Editar</strong> y <strong>Eliminar</strong>.</li>
+    <li>Botón <strong>"+ Agregar"</strong> en la parte superior para crear un nuevo ítem.</li>
+  </ul>
+
+  <h4>Crear un nuevo ítem</h4>
+  <ul class="step-list">
+    <li>
+      <span class="step-num">1</span>
+      <div>Hacer clic en <strong>"+ Agregar"</strong>. Se abre un modal con el formulario de alta.</div>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <div>Completar los campos del formulario:</div>
+    </li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr><th>Campo</th><th>Descripción</th><th>Valores posibles</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Título</td><td>Nombre del plato o bebida</td><td>Texto libre</td></tr>
+      <tr><td>Descripción</td><td>Descripción del ítem</td><td>Texto libre</td></tr>
+      <tr><td>Precio</td><td>Precio en pesos</td><td>Número</td></tr>
+      <tr><td>Tipo</td><td>Categoría principal del ítem</td><td>COMIDAS · BEBIDAS · TRAGOS</td></tr>
+      <tr>
+        <td>Sub-tipo</td>
+        <td>Categoría secundaria (agrupa ítems del mismo tipo)</td>
+        <td>
+          <em>Para COMIDAS:</em> ENTRADAS, PRINCIPALES, GUARNICIONES, PIZZAS, SANDWICHES<br>
+          <em>Para BEBIDAS:</em> CERVEZAS, VINOS, ESPUMANTES, BEBIDAS SIN ALCOHOL
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ul class="step-list">
+    <li>
+      <span class="step-num">3</span>
+      <div>Hacer clic en <strong>Guardar</strong>. El ítem se agrega al catálogo y el asistente IA se actualiza automáticamente.</div>
+    </li>
+  </ul>
+
+  <h4>Editar un ítem existente</h4>
+  <ul class="step-list">
+    <li>
+      <span class="step-num green">1</span>
+      <div>Hacer clic en el ícono de <strong>Editar</strong> (lápiz) en la fila del ítem a modificar.</div>
+    </li>
+    <li>
+      <span class="step-num green">2</span>
+      <div>El modal se abre con los datos actuales del ítem. Modificar los campos necesarios.</div>
+    </li>
+    <li>
+      <span class="step-num green">3</span>
+      <div>Hacer clic en <strong>Guardar</strong>. Los cambios se aplican de inmediato en el menú público.</div>
+    </li>
+  </ul>
+
+  <h4>Eliminar un ítem</h4>
+  <ul class="step-list">
+    <li>
+      <span class="step-num slate">1</span>
+      <div>Hacer clic en el ícono de <strong>Eliminar</strong> (papelera) en la fila del ítem.</div>
+    </li>
+    <li>
+      <span class="step-num slate">2</span>
+      <div>Confirmar la eliminación en el diálogo de confirmación. Esta acción es irreversible.</div>
+    </li>
+  </ul>
+
+  <div class="callout warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div>
+      <strong>Sincronización Automática</strong>
+      Al crear, editar o eliminar un ítem, el sistema actualiza automáticamente el conocimiento del asistente IA. Sin embargo, si se realizan varios cambios masivos, se recomienda ejecutar una resincronización completa desde el Dashboard (ver sección 4.7).
+    </div>
+  </div>
+
+
+  <!-- 4.4 Sugerencias -->
+  <h3 id="a-sugerencias" style="margin-top:40px">4.4 · Gestión de Sugerencias del Chef</h3>
+  <span class="role-badge admin">Administrador</span>
+
+  <p style="margin-top:12px">Las sugerencias son ítems destacados que se muestran en la sección especial del menú con imagen, descripción y precio. Se administran desde el módulo de Sugerencias.</p>
+
+  <h4>Vista principal</h4>
+  <ul class="check">
+    <li>Tabla con columnas: <strong>Imagen</strong> (miniatura), <strong>Título</strong>, <strong>Descripción</strong> y <strong>Precio</strong>.</li>
+    <li>Botones de acción: <strong>Editar</strong> y <strong>Eliminar</strong>.</li>
+    <li>Botón <strong>"+ Agregar"</strong> para crear una nueva sugerencia.</li>
+  </ul>
+
+  <h4>Crear una nueva sugerencia</h4>
+  <ul class="step-list">
+    <li>
+      <span class="step-num">1</span>
+      <div>Hacer clic en <strong>"+ Agregar"</strong>.</div>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <div>Completar los campos del formulario:</div>
+    </li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr><th>Campo</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Título</td><td>Nombre del plato sugerido</td></tr>
+      <tr><td>Descripción</td><td>Descripción del plato (ingredientes, preparación, etc.)</td></tr>
+      <tr><td>Precio</td><td>Precio en pesos</td></tr>
+      <tr><td>Imagen</td><td>Foto del plato — se puede cargar desde el dispositivo</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="step-list">
+    <li>
+      <span class="step-num">3</span>
+      <div>Para cargar una imagen: hacer clic en el área de <strong>carga de imagen</strong>, seleccionar el archivo desde el dispositivo. El sistema sube la imagen automáticamente.</div>
+    </li>
+    <li>
+      <span class="step-num">4</span>
+      <div>Hacer clic en <strong>Guardar</strong>. La sugerencia aparece de inmediato en la sección pública del sitio.</div>
+    </li>
+  </ul>
+
+  <h4>Editar una sugerencia</h4>
+  <ul class="check">
+    <li>Hacer clic en el ícono de <strong>Editar</strong> en la fila correspondiente.</li>
+    <li>Modificar los campos deseados. La imagen se puede reemplazar subiendo una nueva.</li>
+    <li>Guardar los cambios. Se aplican de inmediato en el menú público.</li>
+  </ul>
+
+  <h4>Eliminar una sugerencia</h4>
+  <ul class="check">
+    <li>Hacer clic en el ícono de <strong>Eliminar</strong> y confirmar. La sugerencia se elimina del menú público.</li>
+  </ul>
+
+  <div class="callout info">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div>
+      <strong>Recomendación de imágenes</strong>
+      Usar imágenes de buena calidad y relación de aspecto cuadrada o 4:3 para una mejor presentación en el menú digital.
+    </div>
+  </div>
+
+
+  <!-- 4.5 Reseñas admin -->
+  <h3 id="a-Reseñas" style="margin-top:40px">4.5 · Gestión de Reseñas</h3>
+  <span class="role-badge admin">Administrador</span>
+
+  <p style="margin-top:12px">El módulo de Reseñas permite al administrador moderar las opiniones publicadas por los clientes.</p>
+
+  <h4>Vista principal</h4>
+  <ul class="check">
+    <li>Tabla con columnas: <strong>Nombre</strong>, <strong>Email</strong>, <strong>Plato</strong>, <strong>Calificación</strong> (estrellas) y <strong>Reseña</strong>.</li>
+    <li>Acciones disponibles por fila: <strong>Editar</strong> y <strong>Eliminar</strong>.</li>
+    <li>No es posible crear Reseñas desde el panel admin (solo los clientes pueden crearlas).</li>
+  </ul>
+
+  <h4>Editar una reseña</h4>
+  <ul class="check">
+    <li>Hacer clic en <strong>Editar</strong>. El modal permite modificar cualquier campo de la reseña.</li>
+    <li>Guardar los cambios. La reseña actualizada se refleja de inmediato en el sitio público.</li>
+  </ul>
+
+  <h4>Eliminar una reseña</h4>
+  <ul class="check">
+    <li>Hacer clic en <strong>Eliminar</strong> y confirmar. La reseña se elimina del listado público.</li>
+    <li>Usar esta función para moderar comentarios que no cumplan con las normas del establecimiento.</li>
+  </ul>
+
+
+  <!-- 4.6 Pedidos -->
+  <h3 id="a-pedidos" style="margin-top:40px">4.6 · Gestión de Pedidos en Tiempo Real</h3>
+  <span class="role-badge admin">Administrador</span>
+
+  <p style="margin-top:12px">El módulo de Pedidos es la herramienta principal de operación del bar. Muestra todos los pedidos activos y permite al equipo actualizar su estado a medida que son procesados. La vista se actualiza automáticamente sin necesidad de recargar la página.</p>
+
+  <h4>Estados de un pedido</h4>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="bubble" style="background:#fef9c3;color:#854d0e;">Pendiente</div>
+      <div class="label">Recibido</div>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">
+      <div class="bubble" style="background:#dbeafe;color:#1e40af;">Confirmado</div>
+      <div class="label">Aceptado</div>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">
+      <div class="bubble" style="background:#f3e8ff;color:#6b21a8;">En Preparación</div>
+      <div class="label">Cocina</div>
+    </div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step">
+      <div class="bubble" style="background:#dcfce7;color:#14532d;">Listo</div>
+      <div class="label">Para servir</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Estado</th><th>Descripción</th><th>Siguiente acción disponible</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="status pending">Pendiente</span></td>
+        <td>El cliente realizó el pedido pero el equipo aún no lo aceptó.</td>
+        <td>Confirmar → <span class="status confirmed">Confirmado</span></td>
+      </tr>
+      <tr>
+        <td><span class="status confirmed">Confirmado</span></td>
+        <td>El equipo aceptó el pedido y fue enviado a cocina.</td>
+        <td>Iniciar preparación → <span class="status in-progress">En Preparación</span></td>
+      </tr>
+      <tr>
+        <td><span class="status in-progress">En Preparación</span></td>
+        <td>La cocina está preparando el pedido.</td>
+        <td>Marcar listo → <span class="status done">Listo</span></td>
+      </tr>
+      <tr>
+        <td><span class="status done">Listo</span></td>
+        <td>El pedido está listo para ser servido en la mesa. Estado final.</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><span class="status cancelled">Cancelado</span></td>
+        <td>El pedido fue cancelado antes de completarse.</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Filtros de estado</h4>
+  <ul class="check">
+    <li>La barra de filtros en la parte superior permite mostrar pedidos por estado: <strong>Todos</strong>, <strong>Pendientes</strong>, <strong>Confirmados</strong>, <strong>En Preparación</strong>, <strong>Listos</strong> o <strong>Cancelados</strong>.</li>
+    <li>Cada filtro muestra el <strong>contador</strong> de pedidos en ese estado.</li>
+    <li>Por defecto se muestran todos los pedidos activos.</li>
+  </ul>
+
+  <h4>Información de cada tarjeta de pedido</h4>
+  <ul class="check">
+    <li><strong>Número de mesa</strong> y <strong>estado actual</strong> con badge de color.</li>
+    <li><strong>Hora</strong> en que se creó el pedido.</li>
+    <li>Lista de <strong>ítems</strong>: nombre del plato, cantidad, notas especiales y subtotal.</li>
+    <li><strong>Total</strong> del pedido.</li>
+    <li>Botones de acción: <strong>avanzar estado</strong> y <strong>cancelar</strong>.</li>
+  </ul>
+
+  <h4>Gestionar un pedido</h4>
+  <ul class="step-list">
+    <li>
+      <span class="step-num">1</span>
+      <div>Al llegar un nuevo pedido, aparece una tarjeta con estado <span class="status pending">Pendiente</span>.</div>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <div>Revisar los ítems del pedido y la mesa.</div>
+    </li>
+    <li>
+      <span class="step-num">3</span>
+      <div>Hacer clic en <strong>"Confirmar"</strong> para aceptar el pedido. El estado cambia a <span class="status confirmed">Confirmado</span> y el cliente recibe la confirmación.</div>
+    </li>
+    <li>
+      <span class="step-num">4</span>
+      <div>Cuando la cocina comienza a prepararlo, hacer clic en <strong>"En preparación"</strong>.</div>
+    </li>
+    <li>
+      <span class="step-num">5</span>
+      <div>Cuando el plato está listo, hacer clic en <strong>"Listo"</strong>. El pedido queda marcado para servir.</div>
+    </li>
+  </ul>
+
+  <h4>Cancelar un pedido</h4>
+  <ul class="check">
+    <li>Hacer clic en <strong>"Cancelar"</strong> en la tarjeta del pedido. Solo está disponible si el pedido no está en estado Listo o ya Cancelado.</li>
+    <li>El pedido se marca como <span class="status cancelled">Cancelado</span> y se retira de los filtros activos.</li>
+  </ul>
+
+  <div class="callout success">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <div>
+      <strong>Actualización automática en tiempo real</strong>
+      El panel de pedidos escucha cambios en la base de datos en tiempo real. Cuando un cliente realiza un nuevo pedido o cuando otro operador actualiza un estado, la vista se actualiza automáticamente sin recargar la página.
+    </div>
+  </div>
+
+
+  <!-- 4.7 RAG -->
+  <h3 id="a-rag" style="margin-top:40px">4.7 · Sincronización del Asistente IA</h3>
+  <span class="role-badge admin">Administrador</span>
+
+  <p style="margin-top:12px">El asistente IA de Bar Wise utiliza una base de conocimiento interna para responder preguntas sobre el menú con precisión. Esta base se actualiza automáticamente al crear, editar o eliminar ítems del catálogo. Sin embargo, en ciertos escenarios es necesario ejecutar una resincronización manual.</p>
+
+  <h4>Cuándo ejecutar la resincronización</h4>
+  <ul class="check">
+    <li>Después de realizar <strong>múltiples cambios masivos</strong> en el catálogo.</li>
+    <li>Si el asistente IA no reconoce platos o precios recientemente actualizados.</li>
+    <li>Después de importar o restaurar datos desde una copia de seguridad.</li>
+  </ul>
+
+  <h4>Cómo ejecutar la resincronización</h4>
+  <ul class="step-list">
+    <li>
+      <span class="step-num">1</span>
+      <div>Ir al <strong>Dashboard</strong>.</div>
+    </li>
+    <li>
+      <span class="step-num">2</span>
+      <div>Hacer clic en el botón <strong>"Resincronizar embeddings"</strong>.</div>
+    </li>
+    <li>
+      <span class="step-num">3</span>
+      <div>Esperar a que el proceso finalice. El botón mostrará un indicador de carga y luego un mensaje de éxito o error.</div>
+    </li>
+  </ul>
+
+  <div class="callout warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div>
+      <strong>Proceso de varios segundos</strong>
+      La resincronización puede tardar entre 10 y 30 segundos dependiendo del tamaño del catálogo. No cerrar la ventana durante el proceso.
+    </div>
+  </div>
+
+
+  <!-- ─── 5. FLUJOS ─────────────────────────────────── -->
+  <div class="section-header page-break" id="flujos">
+    <div class="icon-box green">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+    </div>
+    <div>
+      <span class="num">Sección 5</span>
+      <h2>Flujos de Proceso</h2>
+    </div>
+  </div>
+
+  <h3>5.1 · Flujo completo de un pedido</h3>
+
+  <table>
+    <thead>
+      <tr><th>Paso</th><th>Actor</th><th>Acción</th><th>Estado Resultante</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><span class="role-badge user">Cliente</span></td>
+        <td>Abre el chat IA e indica su número de mesa</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Sistema</td>
+        <td>Crea el pedido asociado a la sesión del cliente</td>
+        <td><span class="status pending">Pendiente</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><span class="role-badge user">Cliente</span></td>
+        <td>Indica los ítems deseados con cantidades y notas especiales</td>
+        <td><span class="status pending">Pendiente</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="role-badge user">Cliente</span></td>
+        <td>Confirma el pedido en el chat</td>
+        <td><span class="status confirmed">Confirmado</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><span class="role-badge admin">Admin</span></td>
+        <td>Ve el pedido en el panel. Lo confirma y lo envía a cocina</td>
+        <td><span class="status in-progress">En Preparación</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><span class="role-badge admin">Admin</span></td>
+        <td>La cocina termina la preparación. Admin marca el pedido como listo</td>
+        <td><span class="status done">Listo</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Mozo</td>
+        <td>Entrega el pedido en la mesa indicada</td>
+        <td><span class="status done">Listo</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:36px">5.2 · Flujo de alta de un nuevo plato</h3>
+
+  <table>
+    <thead>
+      <tr><th>Paso</th><th>Actor</th><th>Acción</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><span class="role-badge admin">Admin</span></td>
+        <td>Navega a Comidas → "+ Agregar"</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><span class="role-badge admin">Admin</span></td>
+        <td>Completa el formulario (título, descripción, precio, tipo, sub-tipo) y guarda</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Sistema</td>
+        <td>Inserta el ítem en la base de datos y actualiza el embedding del asistente IA automáticamente</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="role-badge user">Cliente</span></td>
+        <td>El plato aparece en el menú público y el asistente IA puede recomendarlo inmediatamente</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:36px">5.3 · Flujo de publicación de una reseña</h3>
+
+  <table>
+    <thead>
+      <tr><th>Paso</th><th>Actor</th><th>Acción</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><span class="role-badge user">Cliente</span></td>
+        <td>Navega a la sección Reseñas y completa el formulario de calificación</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Sistema</td>
+        <td>Valida los datos (incluyendo formato de email) y guarda la reseña</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Sistema</td>
+        <td>La reseña aparece de inmediato en el listado público y el promedio de calificación se actualiza</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="role-badge admin">Admin</span></td>
+        <td>Puede ver, editar o eliminar la reseña desde el módulo de Reseñas en el panel admin</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- ─── 6. GLOSARIO ──────────────────────────────── -->
+  <div class="section-header page-break" id="glosario">
+    <div class="icon-box slate">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+      </svg>
+    </div>
+    <div>
+      <span class="num">Sección 6</span>
+      <h2>Glosario</h2>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Término</th><th>Definición</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Asistente IA</strong></td>
+        <td>Chatbot con inteligencia artificial capaz de responder preguntas sobre el menú y gestionar pedidos de forma conversacional. Powered by Claude (Anthropic).</td>
+      </tr>
+      <tr>
+        <td><strong>Chat Widget</strong></td>
+        <td>Botón flotante en la esquina inferior derecha que abre el panel del asistente IA.</td>
+      </tr>
+      <tr>
+        <td><strong>Dashboard</strong></td>
+        <td>Pantalla principal del panel de administración que resume el estado del sistema con estadísticas clave.</td>
+      </tr>
+      <tr>
+        <td><strong>Embedding / RAG</strong></td>
+        <td>Tecnología que permite al asistente IA buscar información relevante del menú para responder preguntas con precisión.</td>
+      </tr>
+      <tr>
+        <td><strong>Estado del pedido</strong></td>
+        <td>Etapa actual de un pedido: Pendiente → Confirmado → En Preparación → Listo / Cancelado.</td>
+      </tr>
+      <tr>
+        <td><strong>Mesa</strong></td>
+        <td>Identificador de la ubicación del cliente en el bar (ej: "Mesa 4", "VIP 2", "Barra").</td>
+      </tr>
+      <tr>
+        <td><strong>Módulo</strong></td>
+        <td>Sección del panel de administración dedicada a una entidad: Comidas, Sugerencias, Reseñas o Pedidos.</td>
+      </tr>
+      <tr>
+        <td><strong>Notas del ítem</strong></td>
+        <td>Instrucciones especiales que el cliente puede indicar al agregar un plato al pedido (ej: "sin cebolla", "bien cocido").</td>
+      </tr>
+      <tr>
+        <td><strong>Panel Admin</strong></td>
+        <td>Sección del sistema accesible únicamente por administradores autenticados, disponible en la ruta <code>/admin</code>.</td>
+      </tr>
+      <tr>
+        <td><strong>Resincronizar</strong></td>
+        <td>Proceso que actualiza la base de conocimiento del asistente IA con los últimos datos del catálogo de comidas y sugerencias.</td>
+      </tr>
+      <tr>
+        <td><strong>Sesión</strong></td>
+        <td>Identificador único generado automáticamente para cada dispositivo de cliente, que asocia su pedido en curso.</td>
+      </tr>
+      <tr>
+        <td><strong>Sub-tipo</strong></td>
+        <td>Categoría secundaria de un ítem del menú que agrupa platos similares (ej: PIZZAS dentro de COMIDAS).</td>
+      </tr>
+      <tr>
+        <td><strong>Sugerencia del Chef</strong></td>
+        <td>Plato destacado con fotografía que el chef recomienda, visible en una sección especial del menú.</td>
+      </tr>
+      <tr>
+        <td><strong>Tiempo Real</strong></td>
+        <td>Capacidad del panel de pedidos de mostrar cambios instantáneamente sin necesidad de recargar la página.</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<!-- ================================================
+     FOOTER
+================================================ -->
+<footer class="doc-footer">
+  <p><strong>Bar Wise</strong> — Manual de Usuario · Versión 1.0 · Mayo 2026</p>
+  <p style="margin-top:6px">Documento de uso interno. Para soporte técnico, contactar al equipo de desarrollo.</p>
+</footer>
+
+</body>
+</html>

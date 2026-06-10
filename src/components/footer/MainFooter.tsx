@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Maps from '../../../public/maps_footer.svg';
 import Menu from '../../../public/menu_footer.svg';
-import SugerenciasSvg from '../../../public/Reseñas_footer.svg';
+import SugerenciasSvg from '../../../public/resenas_footer.svg';
 
 const optionsFooter = [
   {
