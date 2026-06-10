@@ -24,16 +24,17 @@ export default function AdminLayout({
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const isLoginPage = pathname === '/admin/login';
+  const isPublicAdminPage =
+    pathname === '/admin/login' || pathname === '/admin/accept-invite';
 
   useEffect(() => {
-    if (!loading && !user && !isLoginPage) {
+    if (!loading && !user && !isPublicAdminPage) {
       router.push('/admin/login');
     }
-  }, [user, loading, isLoginPage, router]);
+  }, [user, loading, isPublicAdminPage, router]);
 
-  // Login page renders without admin shell
-  if (isLoginPage) {
+  // These pages render without the admin shell (no auth required)
+  if (isPublicAdminPage) {
     return <>{children}</>;
   }
 
