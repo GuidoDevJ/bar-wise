@@ -22,7 +22,7 @@ export function useGetAllComments(refreshKey = 0) {
         const allComments: Comment[] = await SupabaseService.getAllComments();
         setComments(allComments);
       } catch (err: unknown) {
-        setError(err || 'Error al cargar las resenas');
+        setError(err || 'Error al cargar las Reseñas');
       } finally {
         setLoading(false);
       }

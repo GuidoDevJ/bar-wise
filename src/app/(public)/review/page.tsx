@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-import FormReview from '@/components/form/review';
 import ReviewCard from '@/components/container/ReviewCard/ReviewCard';
+import FormReview from '@/components/form/review';
 import { useGetAllComments } from '@/hooks/useGetAllComments';
+import { useCallback, useState } from 'react';
 
 export default function Review() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -18,10 +18,10 @@ export default function Review() {
       <FormReview onReviewSubmitted={handleReviewSubmitted} />
 
       <section className="w-[90%] md:w-[70%] max-w-[700px]">
-        <h2 className="text-xl font-bold mb-4">Resenas de clientes</h2>
-        {loading && <p className="text-slate-500">Cargando resenas...</p>}
+        <h2 className="text-xl font-bold mb-4">Reseñas de clientes</h2>
+        {loading && <p className="text-slate-500">Cargando Reseñas...</p>}
         {!loading && comments.length === 0 && (
-          <p className="text-slate-400">Aun no hay resenas</p>
+          <p className="text-slate-400">Aun no hay Reseñas</p>
         )}
         <div className="flex flex-col gap-4">
           {comments.map((comment) => (

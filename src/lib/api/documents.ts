@@ -16,7 +16,7 @@ export const BAR_INFO = [
     content:
       'Para reservas y consultas en Bar Wise, contactanos a traves de nuestras ' +
       'redes sociales o visitanos en persona en Buenos Aires, Argentina. ' +
-      'También podes dejar tu reseña en la seccion de reseñas de la app.',
+      'También podes dejar tu reseña en la seccion de Reseñas de la app.',
     metadata: { type: 'info', section: 'contacto' },
   },
   {

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Maps from '../../../public/maps_footer.svg';
 import Menu from '../../../public/menu_footer.svg';
-import SugerenciasSvg from '../../../public/reseñas_footer.svg';
+import SugerenciasSvg from '../../../public/Reseñas_footer.svg';
 
 const optionsFooter = [
   {
@@ -16,7 +16,7 @@ const optionsFooter = [
     href: '/location',
   },
   {
-    title: 'Resenas',
+    title: 'Reseñas',
     imgSrc: SugerenciasSvg,
     href: '/review',
   },

@@ -52,7 +52,7 @@ const ToggleBarMenu = () => {
         href="/review"
         className="flex items-center gap-2 text-[#000] hover:bg-secondary-100 p-2 transition"
       >
-        <span className="text-sm font-medium">Resenas</span>
+        <span className="text-sm font-medium">Reseñas</span>
       </Link>
       <Link
         href="/about"

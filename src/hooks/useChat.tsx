@@ -8,18 +8,28 @@ export interface ChatMessage {
   content: string;
 }
 
+function generateUUID(): string {
+  if (typeof globalThis.crypto?.randomUUID === 'function') {
+    return globalThis.crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
+}
+
 function getOrCreateSessionId(): string {
   const KEY = 'bw_session_id';
   let id = localStorage.getItem(KEY);
   if (!id) {
-    id = crypto.randomUUID();
+    id = generateUUID();
     localStorage.setItem(KEY, id);
   }
   return id;
 }
 
 function newSessionId(): string {
-  const id = crypto.randomUUID();
+  const id = generateUUID();
   localStorage.setItem('bw_session_id', id);
   return id;
 }
@@ -45,7 +55,7 @@ export function useChat() {
 
       const history = messagesRef.current;
       const userMsg: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: generateUUID(),
         role: 'user',
         content: text,
       };
@@ -56,7 +66,7 @@ export function useChat() {
       // Placeholder del asistente para streaming
       setMessages((prev) => [
         ...prev,
-        { id: crypto.randomUUID(), role: 'assistant', content: '' },
+        { id: generateUUID(), role: 'assistant', content: '' },
       ]);
 
       try {

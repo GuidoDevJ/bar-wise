@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const navItems = [
   { label: 'Dashboard', href: '/admin', icon: '📊' },
   { label: 'Pedidos', href: '/admin/orders', icon: '🛒' },
   { label: 'Comidas', href: '/admin/foods', icon: '🍽️' },
   { label: 'Sugerencias', href: '/admin/suggestions', icon: '⭐' },
-  { label: 'Resenas', href: '/admin/comments', icon: '💬' },
+  { label: 'Reseñas', href: '/admin/comments', icon: '💬' },
+  { label: 'Usuarios', href: '/admin/users', icon: '👤' },
 ];
 
 export default function AdminLayout({

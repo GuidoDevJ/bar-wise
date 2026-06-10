@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import SupabaseService from '@/lib/supabase/service';
-import { Database } from '@/lib/supabase/database';
 import { useAuth } from '@/hooks/useAuth';
+import { Database } from '@/lib/supabase/database';
+import SupabaseService from '@/lib/supabase/service';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 type Comment = Database['public']['Tables']['comments']['Row'];
 
@@ -19,7 +19,7 @@ interface Stats {
 const statCards = [
   { key: 'totalFoods', label: 'Comidas', href: '/admin/foods', color: 'bg-primary-100 text-primary-700' },
   { key: 'totalSuggestions', label: 'Sugerencias', href: '/admin/suggestions', color: 'bg-yellow-100 text-yellow-700' },
-  { key: 'totalComments', label: 'Resenas', href: '/admin/comments', color: 'bg-blue-100 text-blue-700' },
+  { key: 'totalComments', label: 'Reseñas', href: '/admin/comments', color: 'bg-blue-100 text-blue-700' },
   { key: 'avgCalification', label: 'Calificacion Promedio', href: '/admin/comments', color: 'bg-green-100 text-green-700' },
   { key: 'pendingOrders', label: 'Pedidos Pendientes', href: '/admin/orders', color: 'bg-orange-100 text-orange-700' },
 ] as const;
@@ -187,7 +187,7 @@ export default function AdminDashboardPage() {
             className="p-4 bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition text-center"
           >
             <span className="text-sm font-medium text-gray-700">
-              Gestionar Resenas
+              Gestionar Reseñas
             </span>
           </Link>
         </div>

@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 type Props = {
   title: string;
@@ -8,25 +11,31 @@ type Props = {
 };
 
 const MainContainerCategory = ({ goTo, imgSrc, title }: Props) => {
-    return (
-      <Link href={goTo} className="block">
-        <div className="relative w-full h-40 group overflow-hidden">
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <Link href={goTo} className="block">
+      <div className="relative w-full h-40 group overflow-hidden bg-secondary-700">
+        {!imgError && (
           <Image
             src={imgSrc}
             alt={title}
             fill
+            sizes="(max-width: 768px) 40vw, 27vw"
             className="object-cover"
+            onError={() => setImgError(true)}
           />
-  
-          {/* Overlay - visible en mobile, hover en desktop */}
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-            <h2 className="text-white text-xl font-semibold text-center">
-              {title}
-            </h2>
-          </div>
+        )}
+
+        {/* Overlay - visible en mobile, hover en desktop */}
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+          <h2 className="text-white text-xl font-semibold text-center">
+            {title}
+          </h2>
         </div>
-      </Link>
-    );
-  };
+      </div>
+    </Link>
+  );
+};
 
 export default MainContainerCategory;

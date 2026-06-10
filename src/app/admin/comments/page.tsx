@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import SupabaseService from '@/lib/supabase/service';
-import { Database } from '@/lib/supabase/database';
 import DataTable, { Column } from '@/components/admin/DataTable';
 import Modal from '@/components/admin/Modal';
 import CommentForm from '@/components/admin/forms/CommentForm';
+import { Database } from '@/lib/supabase/database';
+import SupabaseService from '@/lib/supabase/service';
+import { useEffect, useState } from 'react';
 
 type Comment = Database['public']['Tables']['comments']['Row'];
 
@@ -92,9 +92,9 @@ export default function AdminCommentsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-800">Resenas</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Reseñas</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Gestiona las resenas de los clientes
+          Gestiona las Reseñas de los clientes
         </p>
       </div>
 
